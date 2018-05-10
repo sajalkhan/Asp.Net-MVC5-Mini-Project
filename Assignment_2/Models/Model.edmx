@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EmployeeDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EmployeeTbl">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeName" Type="nvarchar" MaxLength="200" />
+          <Property Name="PresentAddress" Type="nvarchar" MaxLength="400" />
+          <Property Name="PermanentAddress" Type="nvarchar" MaxLength="400" />
+          <Property Name="LocationId" Type="bigint" />
+          <Property Name="PositionId" Type="bigint" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="1" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" />
+          <Property Name="IsUserOfSystem" Type="int" />
+          <Property Name="DateOfBirth" Type="date" />
+          <Property Name="JoiningDate" Type="date" />
+          <Property Name="MaritalStatus" Type="nvarchar" MaxLength="1" />
+          <Property Name="Salary" Type="float" />
+        </EntityType>
+        <EntityType Name="LocationTbl">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="bigint" Nullable="false" />
+          <Property Name="LocationName" Type="nvarchar" MaxLength="300" />
+        </EntityType>
+        <EntityType Name="PositionTbl">
+          <Key>
+            <PropertyRef Name="PositionId" />
+          </Key>
+          <Property Name="PositionId" Type="bigint" Nullable="false" />
+          <Property Name="PositionName" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <Association Name="FK_EmployeeTbl_ToTable">
+          <End Role="LocationTbl" Type="Self.LocationTbl" Multiplicity="0..1" />
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationTbl">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="EmployeeTbl">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeTbl_ToTable_1">
+          <End Role="PositionTbl" Type="Self.PositionTbl" Multiplicity="0..1" />
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PositionTbl">
+              <PropertyRef Name="PositionId" />
+            </Principal>
+            <Dependent Role="EmployeeTbl">
+              <PropertyRef Name="PositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeDbModelStoreContainer">
+          <EntitySet Name="EmployeeTbl" EntityType="Self.EmployeeTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LocationTbl" EntityType="Self.LocationTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PositionTbl" EntityType="Self.PositionTbl" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_EmployeeTbl_ToTable" Association="Self.FK_EmployeeTbl_ToTable">
+            <End Role="LocationTbl" EntitySet="LocationTbl" />
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeTbl_ToTable_1" Association="Self.FK_EmployeeTbl_ToTable_1">
+            <End Role="PositionTbl" EntitySet="PositionTbl" />
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbl" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmployeeDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EmployeeTbl">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PresentAddress" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="PermanentAddress" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="LocationId" Type="Int64" />
+          <Property Name="PositionId" Type="Int64" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IsUserOfSystem" Type="Int32" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="JoiningDate" Type="DateTime" Precision="0" />
+          <Property Name="MaritalStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Salary" Type="Double" />
+          <NavigationProperty Name="LocationTbl" Relationship="Self.FK_EmployeeTbl_ToTable" FromRole="EmployeeTbl" ToRole="LocationTbl" />
+          <NavigationProperty Name="PositionTbl" Relationship="Self.FK_EmployeeTbl_ToTable_1" FromRole="EmployeeTbl" ToRole="PositionTbl" />
+        </EntityType>
+        <EntityType Name="LocationTbl">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="Int64" Nullable="false" />
+          <Property Name="LocationName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EmployeeTbls" Relationship="Self.FK_EmployeeTbl_ToTable" FromRole="LocationTbl" ToRole="EmployeeTbl" />
+        </EntityType>
+        <EntityType Name="PositionTbl">
+          <Key>
+            <PropertyRef Name="PositionId" />
+          </Key>
+          <Property Name="PositionId" Type="Int64" Nullable="false" />
+          <Property Name="PositionName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EmployeeTbls" Relationship="Self.FK_EmployeeTbl_ToTable_1" FromRole="PositionTbl" ToRole="EmployeeTbl" />
+        </EntityType>
+        <Association Name="FK_EmployeeTbl_ToTable">
+          <End Role="LocationTbl" Type="Self.LocationTbl" Multiplicity="0..1" />
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationTbl">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="EmployeeTbl">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeTbl_ToTable_1">
+          <End Role="PositionTbl" Type="Self.PositionTbl" Multiplicity="0..1" />
+          <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PositionTbl">
+              <PropertyRef Name="PositionId" />
+            </Principal>
+            <Dependent Role="EmployeeTbl">
+              <PropertyRef Name="PositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Db" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EmployeeTbls" EntityType="Self.EmployeeTbl" />
+          <EntitySet Name="LocationTbls" EntityType="Self.LocationTbl" />
+          <EntitySet Name="PositionTbls" EntityType="Self.PositionTbl" />
+          <AssociationSet Name="FK_EmployeeTbl_ToTable" Association="Self.FK_EmployeeTbl_ToTable">
+            <End Role="LocationTbl" EntitySet="LocationTbls" />
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeTbl_ToTable_1" Association="Self.FK_EmployeeTbl_ToTable_1">
+            <End Role="PositionTbl" EntitySet="PositionTbls" />
+            <End Role="EmployeeTbl" EntitySet="EmployeeTbls" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmployeeDbModelStoreContainer" CdmEntityContainer="Db">
+          <EntitySetMapping Name="EmployeeTbls">
+            <EntityTypeMapping TypeName="EmployeeDbModel.EmployeeTbl">
+              <MappingFragment StoreEntitySet="EmployeeTbl">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="PresentAddress" ColumnName="PresentAddress" />
+                <ScalarProperty Name="PermanentAddress" ColumnName="PermanentAddress" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="IsUserOfSystem" ColumnName="IsUserOfSystem" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LocationTbls">
+            <EntityTypeMapping TypeName="EmployeeDbModel.LocationTbl">
+              <MappingFragment StoreEntitySet="LocationTbl">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PositionTbls">
+            <EntityTypeMapping TypeName="EmployeeDbModel.PositionTbl">
+              <MappingFragment StoreEntitySet="PositionTbl">
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="PositionName" ColumnName="PositionName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

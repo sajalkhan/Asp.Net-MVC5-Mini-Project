@@ -1,0 +1,156 @@
+﻿@model Assignment_2.Models.EmployeeVm
+
+@{
+    ViewBag.Title = "Edit info";
+}
+
+@if (TempData["SM"] != null)
+{
+    <div class="container alert alert-success" style="width: 30%">
+        @TempData["SM"]
+    </div>
+}
+
+<body>
+
+    <form id="myForm" class="container" style="width: 30%">
+        <ul class="list-group">
+            <li class="list-group-item">
+
+                @Html.HiddenFor(model => model.EmployeeId)
+
+                @Html.EditorFor(x => x.EmployeeName, new { htmlAttributes = new { @id = "empName", @class = "form-control", @placeholder = "Name" } })<br />
+                @Html.ValidationMessageFor(x => x.EmployeeName)
+
+                @Html.EditorFor(x => x.PresentAddress, new { htmlAttributes = new { @id = "prAddress", @class = "form-control", @placeholder = "Present Address" } })<br />
+                @Html.ValidationMessageFor(x => x.PresentAddress)
+
+                @Html.EditorFor(x => x.PermanentAddress, new { htmlAttributes = new { @id = "pAddress", @class = "form-control", @placeholder = "Permanent Address" } })<br />
+                @Html.ValidationMessageFor(x => x.PresentAddress)
+
+                @Html.DropDownListFor(x => x.LocationId, ViewBag.Location as SelectList, "--Select Location--", new { @id = "location", @class = "form-control" })<br />
+                @Html.ValidationMessageFor(x => x.LocationId)
+
+                @Html.DropDownListFor(x => x.PositionId, ViewBag.Position as SelectList, "--Select Position--", new { @id = "position", @class = "form-control" })<br />
+                @Html.ValidationMessageFor(x => x.PositionId)
+
+                Male @Html.RadioButtonFor(x => x.Gender, "1", new { @checked = "true" })
+                Female @Html.RadioButtonFor(x => x.Gender, "0")<br /><br />
+
+                @Html.EditorFor(x => x.PhoneNumber, new { htmlAttributes = new { @id = "phnNumber", @class = "form-control phnNum", @placeholder = "Phone Number", @onKeypress = "return isInputNumber(event)" } })<br />
+                @Html.ValidationMessageFor(x => x.PhoneNumber)
+
+                User @Html.RadioButtonFor(x => x.IsUserOfSystem, "1", new { @checked = "true" })
+                Admin @Html.RadioButtonFor(x => x.IsUserOfSystem, "2")<br /><br />
+
+                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @id = "birthDate", @class = "form-control datepicker", placeholder = "Employee Date Of Birth" } })<br />
+                @Html.ValidationMessageFor(x => x.DateOfBirth)
+
+                @Html.EditorFor(x => x.Salary, new { htmlAttributes = new { @id = "salary", @class = "form-control", @placeholder = "Current Salary", @onkeypress = "return isNumberKey(event,this)" } })<br />
+                @Html.ValidationMessageFor(x => x.Salary)
+
+                @Html.EditorFor(model => model.JoiningDate, new { htmlAttributes = new { @id = "joinDate", @class = "form-control datepicker", placeholder = "Employee Joining Date" } })<br />
+                @Html.ValidationMessageFor(x => x.JoiningDate)
+
+                <input type="button" value="Save" id="btnSave" class="btn btn-success" style="width: 90px" />
+                <a href="/Employee/info" class="btn btn-info" style="width: 90px">Show</a>
+                <input type="button" value="Clear" class="btn btn-primary" style="width: 90px" id="btnClear" onclick="ClearFields();" />
+            </li>
+
+        </ul>
+    </form>
+</body>
+
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+
+
+@section scripts
+{
+
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script>
+
+        //Here Add DatePicker
+        // Take Help from Here https://youtu.be/Yuo2XX5_rYo
+
+        $(function() {
+            $(".datepicker").datepicker({
+                dateFormate: "dd/mm/yy"
+            });
+        });
+
+        //Submit Form
+        $(document).ready(function() {
+            $("#btnSave").click(function() {
+                var data = $("#myForm").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/Employee/EditInfo",
+                    data: data,
+                    success: function(response) {
+                        alert("data Updated");
+                    }
+                });
+            });
+        });
+
+        //Phone TextBox Number Only JQuery
+        // Take Help Form Here https://jsfiddle.net/Behseini/ue8gj52t/
+
+        //$(".phnNum").on("keypress keyup blur",
+        //    function(event) {
+        //        $(this).val($(this).val().replace(/[^\d].+/, ""));
+
+        //        if ((event.which < 48 || event.which > 57)) {
+
+        //            if (event.which != 8) {
+        //                event.preventDefault();
+        //            }
+        //        }
+        //    });
+
+
+        function isInputNumber(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+
+
+        function isNumberKey(evt, obj) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            var value = obj.value;
+            var dotcontains = value.indexOf(".") != -1;
+            if (dotcontains)
+                if (charCode == 46) return false;
+            if (charCode == 46) {
+                return true;
+            }
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+
+        //clear all
+        function ClearFields() {
+            document.getElementById("empName").value = "";
+            document.getElementById("prAddress").value = "";
+            document.getElementById("pAddress").value = "";
+            document.getElementById("location").value = "";
+            document.getElementById("position").value = "";
+            document.getElementById("phnNumber").value = "";
+            document.getElementById("birthDate").value = "";
+            document.getElementById("salary").value = "";
+            document.getElementById("joinDate").value = "";
+        }
+
+    </script>
+}
+
+
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

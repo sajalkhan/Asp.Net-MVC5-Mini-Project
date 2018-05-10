@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EmployeeDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="EmployeeTbl">
+    <Key>
+      <PropertyRef Name="EmployeeId" />
+    </Key>
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="PresentAddress" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+    <Property Name="PermanentAddress" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+    <Property Name="LocationId" Type="Int64" />
+    <Property Name="PositionId" Type="Int64" />
+    <Property Name="Gender" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="IsUserOfSystem" Type="Int32" />
+    <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+    <Property Name="JoiningDate" Type="DateTime" Precision="0" />
+    <Property Name="MaritalStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="Salary" Type="Double" />
+    <NavigationProperty Name="LocationTbl" Relationship="Self.FK_EmployeeTbl_ToTable" FromRole="EmployeeTbl" ToRole="LocationTbl" />
+    <NavigationProperty Name="PositionTbl" Relationship="Self.FK_EmployeeTbl_ToTable_1" FromRole="EmployeeTbl" ToRole="PositionTbl" />
+  </EntityType>
+  <EntityType Name="LocationTbl">
+    <Key>
+      <PropertyRef Name="LocationId" />
+    </Key>
+    <Property Name="LocationId" Type="Int64" Nullable="false" />
+    <Property Name="LocationName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="EmployeeTbls" Relationship="Self.FK_EmployeeTbl_ToTable" FromRole="LocationTbl" ToRole="EmployeeTbl" />
+  </EntityType>
+  <EntityType Name="PositionTbl">
+    <Key>
+      <PropertyRef Name="PositionId" />
+    </Key>
+    <Property Name="PositionId" Type="Int64" Nullable="false" />
+    <Property Name="PositionName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="EmployeeTbls" Relationship="Self.FK_EmployeeTbl_ToTable_1" FromRole="PositionTbl" ToRole="EmployeeTbl" />
+  </EntityType>
+  <Association Name="FK_EmployeeTbl_ToTable">
+    <End Role="LocationTbl" Type="Self.LocationTbl" Multiplicity="0..1" />
+    <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LocationTbl">
+        <PropertyRef Name="LocationId" />
+      </Principal>
+      <Dependent Role="EmployeeTbl">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EmployeeTbl_ToTable_1">
+    <End Role="PositionTbl" Type="Self.PositionTbl" Multiplicity="0..1" />
+    <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PositionTbl">
+        <PropertyRef Name="PositionId" />
+      </Principal>
+      <Dependent Role="EmployeeTbl">
+        <PropertyRef Name="PositionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Db" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="EmployeeTbls" EntityType="Self.EmployeeTbl" />
+    <EntitySet Name="LocationTbls" EntityType="Self.LocationTbl" />
+    <EntitySet Name="PositionTbls" EntityType="Self.PositionTbl" />
+    <AssociationSet Name="FK_EmployeeTbl_ToTable" Association="Self.FK_EmployeeTbl_ToTable">
+      <End Role="LocationTbl" EntitySet="LocationTbls" />
+      <End Role="EmployeeTbl" EntitySet="EmployeeTbls" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EmployeeTbl_ToTable_1" Association="Self.FK_EmployeeTbl_ToTable_1">
+      <End Role="PositionTbl" EntitySet="PositionTbls" />
+      <End Role="EmployeeTbl" EntitySet="EmployeeTbls" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

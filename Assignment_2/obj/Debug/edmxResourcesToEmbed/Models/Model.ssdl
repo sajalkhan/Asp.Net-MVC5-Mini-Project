@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EmployeeDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="EmployeeTbl">
+    <Key>
+      <PropertyRef Name="EmployeeId" />
+    </Key>
+    <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeName" Type="nvarchar" MaxLength="200" />
+    <Property Name="PresentAddress" Type="nvarchar" MaxLength="400" />
+    <Property Name="PermanentAddress" Type="nvarchar" MaxLength="400" />
+    <Property Name="LocationId" Type="bigint" />
+    <Property Name="PositionId" Type="bigint" />
+    <Property Name="Gender" Type="nvarchar" MaxLength="1" />
+    <Property Name="Phone" Type="varchar" MaxLength="50" />
+    <Property Name="IsUserOfSystem" Type="int" />
+    <Property Name="DateOfBirth" Type="date" />
+    <Property Name="JoiningDate" Type="date" />
+    <Property Name="MaritalStatus" Type="nvarchar" MaxLength="1" />
+    <Property Name="Salary" Type="float" />
+  </EntityType>
+  <EntityType Name="LocationTbl">
+    <Key>
+      <PropertyRef Name="LocationId" />
+    </Key>
+    <Property Name="LocationId" Type="bigint" Nullable="false" />
+    <Property Name="LocationName" Type="nvarchar" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="PositionTbl">
+    <Key>
+      <PropertyRef Name="PositionId" />
+    </Key>
+    <Property Name="PositionId" Type="bigint" Nullable="false" />
+    <Property Name="PositionName" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <Association Name="FK_EmployeeTbl_ToTable">
+    <End Role="LocationTbl" Type="Self.LocationTbl" Multiplicity="0..1" />
+    <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LocationTbl">
+        <PropertyRef Name="LocationId" />
+      </Principal>
+      <Dependent Role="EmployeeTbl">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EmployeeTbl_ToTable_1">
+    <End Role="PositionTbl" Type="Self.PositionTbl" Multiplicity="0..1" />
+    <End Role="EmployeeTbl" Type="Self.EmployeeTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PositionTbl">
+        <PropertyRef Name="PositionId" />
+      </Principal>
+      <Dependent Role="EmployeeTbl">
+        <PropertyRef Name="PositionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EmployeeDbModelStoreContainer">
+    <EntitySet Name="EmployeeTbl" EntityType="Self.EmployeeTbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LocationTbl" EntityType="Self.LocationTbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PositionTbl" EntityType="Self.PositionTbl" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_EmployeeTbl_ToTable" Association="Self.FK_EmployeeTbl_ToTable">
+      <End Role="LocationTbl" EntitySet="LocationTbl" />
+      <End Role="EmployeeTbl" EntitySet="EmployeeTbl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EmployeeTbl_ToTable_1" Association="Self.FK_EmployeeTbl_ToTable_1">
+      <End Role="PositionTbl" EntitySet="PositionTbl" />
+      <End Role="EmployeeTbl" EntitySet="EmployeeTbl" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

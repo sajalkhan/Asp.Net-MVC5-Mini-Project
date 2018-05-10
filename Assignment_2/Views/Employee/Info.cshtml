@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Assignment_2.Models.EmployeeVm>
+
+@{
+    ViewBag.Title = "Info";
+}
+
+<div class="container">
+    <h1>@Html.ActionLink("Back", "Index")</h1> 
+</div>
+
+<form class="container">
+    <table class="table table-bordered table-striped table-responsive">
+        <tr>
+            <th>Employee Name</th>
+            <th>Location</th>
+            <th>Phone Number</th>
+            <th></th>
+        </tr>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.EmployeeName</td>
+                <td>@item.LocationName</td>
+                <td>@item.PhoneNumber</td>
+
+                <td style="width: 180px">
+                    <a href="/Employee/EditInfo?id=@item.EmployeeId" class="btn btn-info">Select</a>
+                    <a href="/Employee/DeleteInfo?id=@item.EmployeeId" onclick="return confirm('Are you sure you want to Delete this Item?')" class="btn btn-danger">Remove</a>
+                </td>
+            </tr> 
+        }
+        </tbody>
+    </table>
+</form>
